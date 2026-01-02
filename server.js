@@ -4,6 +4,9 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const authRoutes = require('./routes/userRoutes');
 const quizRoutes = require('./routes/quizRoutes');
+const debugRoutes = require("./routes/debugRoutes");
+const codeRoutes = require("./routes/codeRoutes");
+const mathRoutes = require("./routes/mathRoutes");
 const userReportRoutes = require("./routes/userReport");
 
 dotenv.config();
@@ -18,9 +21,12 @@ mongoose.connect(process.env.MONGO_URI)
 
 app.use("/", authRoutes);
 app.use("/quiz", quizRoutes);
+app.use("/debug", debugRoutes);
+app.use("/code", codeRoutes);
+app.use("/math", mathRoutes);
 app.use("/submit", userReportRoutes);
 
 const PORT = 5000;
-app.listen(5000,() => {
-  console.log("Server running on "+PORT);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on port ${PORT}`);
 });
