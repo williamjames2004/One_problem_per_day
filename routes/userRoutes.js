@@ -132,5 +132,4 @@ router.post("/user/getdata", async (req, res) => {
   }
 })
 
-
 module.exports = router;
