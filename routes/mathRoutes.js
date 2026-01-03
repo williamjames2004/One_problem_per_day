@@ -133,4 +133,44 @@ router.post("/by-id", async (req, res) => {
   }
 });
 
+router.post("/run", async (req, res) => {
+  try {
+    const { qtn_id, user_answer, unit } = req.body;
+
+    if (!qtn_id || user_answer === undefined) {
+      return res.status(400).json({ success: false, message: "qtn_id and user_answer are required" });
+    }
+
+    // Fetch the question from DB
+    const question = await Math.findOne({ qtn_id });
+    if (!question) {
+      return res.status(404).json({ success: false, message: "Question not found" });
+    }
+
+    // Normalize answers
+    const submittedAnswer = user_answer.toString().trim();
+    const submittedUnit = (unit || "").trim();
+
+    const correctAnswers = question.correct_answers.map(ans => ans.trim());
+
+    // Check if answer matches AND unit matches
+    const isCorrect =
+      correctAnswers.includes(submittedAnswer) 
+      // &&
+      // (question.unit.trim() === submittedUnit || question.unit.trim() === "");
+
+    const score = isCorrect ? question.max_score : 0;
+
+    res.json({
+      success: true,
+      correct: isCorrect,
+      score,
+      max_score: question.max_score
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+});
+
 module.exports = router;
