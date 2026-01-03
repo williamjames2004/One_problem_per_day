@@ -107,7 +107,9 @@ router.post("/by-id", async (req, res) => {
         constraints: 1,
         difficulty: 1,
         tags: 1,
-        language: 1
+        language: 1,
+        test_cases: 1,   // ✅ ADD THIS
+        max_score: 1     // ✅ OPTIONAL but useful
       }
     );
 
