@@ -7,7 +7,7 @@ const router = express.Router();
 /* ================= STORE USER REPORT ================= */
 router.post("/store", async (req, res) => {
   try {
-    const { user_id, quiz, debug } = req.body;
+    const { user_id, quiz, debug, coding, math } = req.body;
 
     if (!user_id) {
       return res.status(400).json({ message: "Missing user_id" });
@@ -27,10 +27,18 @@ router.post("/store", async (req, res) => {
       reportData.debug = debug;
     }
 
+    if (Array.isArray(coding) && coding.length > 0) {
+      reportData.coding = coding;
+    }
+
+    if (Array.isArray(math) && math.length > 0) {
+      reportData.math = math;
+    }
+
     // At least one of quiz/debug should be provided
-    if (!reportData.quiz && !reportData.debug) {
+    if (!reportData.quiz && !reportData.debug && !reportData.coding && !reportData.math) {
       return res.status(400).json({
-        message: "No quiz or debug data provided"
+        message: "No quiz or debug or coding or math data provided"
       });
     }
 
@@ -48,6 +56,37 @@ router.post("/store", async (req, res) => {
     console.error(error);
     res.status(500).json({
       error: error.message
+    });
+  }
+});
+
+router.post("/getresult", async (req, res) => {
+  try {
+    const { user_id } = req.body;
+
+    if (!user_id) {
+      return res
+        .status(400)
+        .json({ success: false, message: "user_id is required" });
+    }
+
+    const report = await UserReport.findOne({ user_id });
+
+    if (!report) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User report not found" });
+    }
+
+    res.json({
+      success: true,
+      data: report,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
     });
   }
 });
