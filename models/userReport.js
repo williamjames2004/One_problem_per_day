@@ -61,6 +61,54 @@ const UserReportSchema = new mongoose.Schema({
         }
       ]
     }
+  ],
+  coding: [
+    {
+      program_id: {
+        type: String,
+        required: true
+      },
+      total_score: {
+        type: Number,
+        required: true,
+        min: 0
+      },
+      obtained_score: {
+        type: Number,
+        required: true,
+        min: 0
+      },
+      percentage: {
+        type: Number,
+        required: true,
+        min: 0,
+        max: 100
+      },
+    }
+  ],
+  math: [
+    {
+      qtn_id: {
+        type: String,
+        required: true
+      },
+      total_score: {
+        type: Number,
+        required: true,
+        min: 0
+      },
+      obtained_score: {
+        type: Number,
+        required: true,
+        min: 0
+      },
+      percentage: {
+        type: Number,
+        required: true,
+        min: 0,
+        max: 100
+      },
+    }
   ]
 
 }, { timestamps: true });
