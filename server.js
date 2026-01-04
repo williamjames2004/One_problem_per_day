@@ -9,6 +9,8 @@ const codeRoutes = require("./routes/codeRoutes");
 const mathRoutes = require("./routes/mathRoutes");
 const userReportRoutes = require("./routes/userReport");
 
+const adminAuthRoutes = require("./routes/adminAuth");
+
 dotenv.config();
 const app = express();
 
@@ -25,6 +27,7 @@ app.use("/debug", debugRoutes);
 app.use("/code", codeRoutes);
 app.use("/math", mathRoutes);
 app.use("/submit", userReportRoutes);
+app.use("/admin", adminAuthRoutes);
 
 const PORT = 5000;
 app.listen(PORT, '0.0.0.0', () => {
