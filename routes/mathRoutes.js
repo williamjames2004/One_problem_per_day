@@ -5,7 +5,6 @@ const Math = require("../models/Math");
 router.post("/create", async (req, res) => {
   try {
     const {
-      qtn_id,
       domain,
       question,
       clue,
@@ -17,20 +16,17 @@ router.post("/create", async (req, res) => {
       max_score
     } = req.body;
 
-    if (!qtn_id || !domain || !question || !correct_answers) {
+    if (!domain || !question || !correct_answers) {
       return res.status(400).json({
         success: false,
         message: "Missing required fields"
       });
     }
 
-    const exists = await Math.findOne({ qtn_id });
-    if (exists) {
-      return res.status(409).json({
-        success: false,
-        message: "Question ID already exists"
-      });
-    }
+    const count = await Math.countDocuments();
+    const n = count + 1;
+    
+    const program_id = `math_${String(n).padStart(3, "0")}`;
 
     const mathQuestion = await Math.create({
       qtn_id,
