@@ -5,7 +5,6 @@ const Practice = require("../models/Code");
 router.post("/create", async (req, res) => {
   try {
     const {
-      program_id,
       program_name,
       problem_statement,
       constraints,
@@ -16,20 +15,17 @@ router.post("/create", async (req, res) => {
       max_score
     } = req.body;
 
-    if (!program_id || !program_name || !problem_statement || !test_cases) {
+    if (!program_name || !problem_statement || !test_cases) {
       return res.status(400).json({
         success: false,
         message: "Missing required fields"
       });
     }
 
-    const exists = await Practice.findOne({ program_id });
-    if (exists) {
-      return res.status(409).json({
-        success: false,
-        message: "Program ID already exists"
-      });
-    }
+    const count = await Practice.countDocuments();
+    const n = count + 1;
+
+    const program_id = `code_${String(n).padStart(3, "0")}`;
 
     const practice = await Practice.create({
       program_id,
