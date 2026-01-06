@@ -6,7 +6,6 @@ const { spawn } = require("child_process");
 router.post("/create", async (req, res) => {
   try {
     const {
-      program_id,
       program_name,
       buggy_program,
       language,
@@ -14,20 +13,17 @@ router.post("/create", async (req, res) => {
       max_score
     } = req.body;
 
-    if (!program_id || !program_name || !buggy_program || !test_cases) {
+    if (!program_name || !buggy_program || !test_cases) {
       return res.status(400).json({
         success: false,
         message: "Missing required fields"
       });
     }
 
-    const exists = await Debug.findOne({ program_id });
-    if (exists) {
-      return res.status(409).json({
-        success: false,
-        message: "Program ID already exists"
-      });
-    }
+    const count = await Debug.countDocuments();
+    const n = count + 1;
+    
+    const program_id = `debug_${String(n).padStart(3, "0")}`;
 
     const debugProgram = await Debug.create({
       program_id,
