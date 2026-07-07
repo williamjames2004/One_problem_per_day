@@ -9,6 +9,7 @@ const codeRoutes = require("./routes/codeRoutes");
 const mathRoutes = require("./routes/mathRoutes");
 const userReportRoutes = require("./routes/userReport");
 const sppaRoutes = require("./routes/authRoutes");
+const markRoutes = require("./routes/markRoutes");
 
 const adminAuthRoutes = require("./routes/adminAuth");
 
@@ -30,6 +31,7 @@ app.use("/math", mathRoutes);
 app.use("/submit", userReportRoutes);
 app.use("/admin", adminAuthRoutes);
 app.use("/sppa", sppaRoutes);
+app.use("/sppa/marks", markRoutes);
 
 const PORT = 5000;
 app.listen(PORT, '0.0.0.0', () => {
