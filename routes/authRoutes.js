@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Staff = require("../models/Staff");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 
 // ================= REGISTER =================
